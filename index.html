@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DocuMind AI - Technical Documentation Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">D</div>
+          <div>
+            <h1>DocuMind AI</h1>
+            <p>Self-updating technical docs</p>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Dashboard sections">
+          <a href="#overview" class="nav-link active">Overview</a>
+          <a href="#docs" class="nav-link">Generated Docs</a>
+          <a href="#apis" class="nav-link">API Map</a>
+          <a href="#pr-updates" class="nav-link">PR Updates</a>
+          <a href="#assistant" class="nav-link">Repo Chat</a>
+        </nav>
+
+        <div class="upload-panel">
+          <label for="repoInput" class="file-trigger">
+            <span aria-hidden="true">+</span>
+            <span>Select repository folder</span>
+          </label>
+          <input id="repoInput" type="file" webkitdirectory directory multiple />
+          <button id="demoButton" class="secondary-button" type="button">Load demo repo</button>
+        </div>
+
+        <div class="system-card">
+          <span class="eyebrow">Agent flow</span>
+          <ol>
+            <li>Parse files</li>
+            <li>Detect routes</li>
+            <li>Generate markdown</li>
+            <li>Update from PRs</li>
+          </ol>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <section id="overview" class="topbar">
+          <div>
+            <span class="eyebrow">Hackathon MVP</span>
+            <h2>AI documentation dashboard for developer teams</h2>
+            <p>
+              Analyze a local codebase, generate beginner-friendly technical documentation,
+              simulate pull request updates, and ask repository questions from one focused UI.
+            </p>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="doc-stack">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="flow-line"></div>
+            <div class="repo-chip">repo</div>
+            <div class="api-chip">API</div>
+            <div class="score-chip">docs 92</div>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Repository metrics">
+          <article class="metric">
+            <span>Documentation Score</span>
+            <strong id="scoreValue">--</strong>
+            <small id="scoreLabel">Awaiting analysis</small>
+          </article>
+          <article class="metric">
+            <span>Files Scanned</span>
+            <strong id="fileCount">0</strong>
+            <small>Source and config files</small>
+          </article>
+          <article class="metric">
+            <span>APIs Detected</span>
+            <strong id="apiCount">0</strong>
+            <small>Routes with evidence</small>
+          </article>
+          <article class="metric">
+            <span>Missing Docs</span>
+            <strong id="missingDocs">--</strong>
+            <small>Estimated from repo signals</small>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <section class="panel stack-panel" aria-labelledby="stackTitle">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Repository intelligence</span>
+                <h3 id="stackTitle">Tech Stack</h3>
+              </div>
+              <button id="analyzeButton" class="primary-button" type="button">Analyze</button>
+            </div>
+            <div id="stackTags" class="tag-list empty-state">Load a repo to detect frameworks and libraries.</div>
+            <div class="split-list">
+              <div>
+                <h4>Architecture</h4>
+                <ul id="architectureList"></ul>
+              </div>
+              <div>
+                <h4>Dependencies</h4>
+                <ul id="dependencyList"></ul>
+              </div>
+            </div>
+          </section>
+
+          <section id="docs" class="panel docs-panel" aria-labelledby="docsTitle">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Markdown output</span>
+                <h3 id="docsTitle">Generated Documentation</h3>
+              </div>
+              <div class="button-row">
+                <button id="copyDocs" class="secondary-button" type="button">Copy</button>
+                <button id="downloadDocs" class="secondary-button" type="button">Download</button>
+              </div>
+            </div>
+            <div class="doc-tabs" role="tablist" aria-label="Documentation views">
+              <button class="tab active" data-doc="readme" type="button">README</button>
+              <button class="tab" data-doc="onboarding" type="button">Onboarding</button>
+              <button class="tab" data-doc="api" type="button">API</button>
+              <button class="tab" data-doc="deployment" type="button">Deploy</button>
+              <button class="tab" data-doc="changes" type="button">Changes</button>
+            </div>
+            <article id="docPreview" class="markdown-preview">
+              <h2>Ready when your repository is.</h2>
+              <p>Select a repository folder or load the demo repo to generate documentation.</p>
+            </article>
+          </section>
+
+          <section id="apis" class="panel api-panel" aria-labelledby="apiTitle">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Route evidence</span>
+                <h3 id="apiTitle">API Documentation</h3>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Path</th>
+                    <th>Source</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="apiTable">
+                  <tr>
+                    <td colspan="4">No APIs detected yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="pr-updates" class="panel pr-panel" aria-labelledby="prTitle">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Main USP</span>
+                <h3 id="prTitle">PR-Based Documentation Updates</h3>
+              </div>
+              <button id="simulatePr" class="primary-button" type="button">Simulate update</button>
+            </div>
+            <textarea id="prDiff" spellcheck="false">+ @router.post("/payment")
++ async def create_payment(payload: PaymentRequest):
++     return payment_service.create(payload)</textarea>
+            <div id="prResult" class="timeline">
+              <p>Paste a pull request diff, then simulate an automatic documentation update.</p>
+            </div>
+          </section>
+
+          <section id="assistant" class="panel assistant-panel" aria-labelledby="assistantTitle">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">RAG-style Q&A</span>
+                <h3 id="assistantTitle">AI Repository Chat</h3>
+              </div>
+            </div>
+            <div id="chatLog" class="chat-log" aria-live="polite">
+              <div class="chat-message agent">Ask about setup, APIs, auth, deployment, folders, or security after analysis.</div>
+            </div>
+            <form id="chatForm" class="chat-form">
+              <input id="chatInput" type="text" placeholder="Ask: Explain authentication flow" />
+              <button class="primary-button" type="submit">Ask</button>
+            </form>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js?v=4"></script>
+  </body>
+</html>
